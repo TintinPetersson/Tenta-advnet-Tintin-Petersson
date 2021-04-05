@@ -6,7 +6,10 @@ namespace Tenta_advnet_Tintin_Petersson
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //Instancing the simulation to start
+            Simulations sim = new Simulations();
+            sim.Start();
+            Console.ReadLine();
         }
     }
 }
