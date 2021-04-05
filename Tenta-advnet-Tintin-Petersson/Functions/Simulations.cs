@@ -14,7 +14,7 @@ namespace Tenta_advnet_Tintin_Petersson
         private Frontend frontend;
         private int month;
         private int day;
-
+        public static int daysToSimulate;
         public Simulations()
         {
             time = new Time();
@@ -32,6 +32,7 @@ namespace Tenta_advnet_Tintin_Petersson
             #endregion
 
             //Asking user for month and day
+            daysToSimulate = frontend.AmountOfDays();
             month = frontend.GetMonth();
             day = frontend.GetDay();
             time.CalculateStartTime(month, day);
@@ -47,7 +48,8 @@ namespace Tenta_advnet_Tintin_Petersson
         private void StatusReport(object sender, EventArgs e)
         {
             Console.WriteLine(Ticker.Tick);
-            Console.WriteLine(time.CurrentTime.ToString());
+            Console.WriteLine($"Day: {ticker.counter}");
+            Console.WriteLine(Time.CurrentTime.ToString());
         }
     }
 }

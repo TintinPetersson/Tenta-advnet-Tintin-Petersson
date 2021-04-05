@@ -21,7 +21,12 @@ namespace Tenta_advnet_Tintin_Petersson
             Console.WriteLine("Enter which day you want: ");
             int day = int.Parse(Console.ReadLine());
             return day;
-
+        }
+        public int AmountOfDays()
+        {
+            Console.WriteLine("How many days do you want to simulate?");
+            int days = int.Parse(Console.ReadLine());
+            return days;
         }
     }
 }
