@@ -9,7 +9,7 @@ namespace Tenta_advnet_Tintin_Petersson
     public class Ticker
     {
         private static Ticker ticker;
-        public int tick = 1;
+        public int tick;
         public event EventHandler Tiktok;
         public int counter = 1;
         public async Task Ticking(int speed)
@@ -17,7 +17,7 @@ namespace Tenta_advnet_Tintin_Petersson
             Console.Clear();
             Tiktok?.Invoke(this, EventArgs.Empty);
             tick++;
-            await Task.Delay(100 * speed);
+            await Task.Delay(10 * speed);
         }
         public static Ticker GetInstance()
         {

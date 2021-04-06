@@ -12,6 +12,7 @@ namespace Tenta_advnet_Tintin_Petersson
         private Time time;
         private Ticker ticker;
         private Frontend frontend;
+        private HamsterDbContext hdb;
         private int month;
         private int day;
         public int daysToSimulate;
@@ -21,6 +22,7 @@ namespace Tenta_advnet_Tintin_Petersson
             time = new Time();
             ticker = Ticker.GetInstance();
             frontend = new Frontend();
+            hdb = new HamsterDbContext();
 
         }
         public void Start()
@@ -49,26 +51,44 @@ namespace Tenta_advnet_Tintin_Petersson
             //Runs the event "Ticking", which has numerous subscribers
             while (ticker.tick <= 100 * daysToSimulate)
             {
-                if (ticker.tick == 100 && daysToSimulate > 0)
+                if (ticker.tick == 101 && daysToSimulate > 1)
                 {
+                    string dailyReport = await Task.Run(() => DailyReport());
+                    await Task.Run(() => frontend.PrintReport(dailyReport));
+                    await Task.Run(() => DailyReport());
+
                     ticker.counter += 1;
-                    ticker.tick = 1;
+                    ticker.tick = 0;
                     daysToSimulate--;
                     time.StartTime = time.CurrentTime.AddHours(14);
-                    await Task.Run(() => ticker.Ticking(speed));
-                    //Show Daily Report
-                    RemoveHamsters();
-                }
-                else if (ticker.tick == 100 && daysToSimulate == 0)
-                {
-                    //Show daily report
+
                     await Task.Run(() => RemoveHamsters());
+                    AddHamsters();
+                    await Task.Run(() => ticker.Ticking(speed));
+                }
+                else if (ticker.tick == 100 && daysToSimulate <= 1)
+                {
+                    string dailyReport = await Task.Run(() => DailyReport());
+                    await Task.Run(() => frontend.PrintReport(dailyReport));
+                    await Task.Run(() => RemoveHamsters());
+                    break;
                 }
                 else
                 {
                     await Task.Run(() => ticker.Ticking(speed));
                 }
             }
+        }
+        private string DailyReport()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var hamster in hdb.Hamsters)
+            {
+               sb.AppendLine($"\tName: {hamster.Name.PadLeft(5).PadRight(20)} " +
+               $"| Gender: {hamster.OwnerId.ToString().PadLeft(2).PadRight(5)} | " +
+               $"Last exercise: {hamster.Id.ToString().PadLeft(5).PadRight(15)} | Activites: {hamster.CageId.ToString().PadLeft(5)}");
+            }
+            return sb.ToString();
         }
         private void StatusReport(object sender, EventArgs e)
         {
@@ -78,8 +98,6 @@ namespace Tenta_advnet_Tintin_Petersson
         }
         private void AddHamsters()
         {
-            HamsterDbContext hdb = new HamsterDbContext();
-
             var hamster = hdb.Hamsters.ToList();
             var cage = hdb.Cages.ToArray();
 
@@ -115,38 +133,30 @@ namespace Tenta_advnet_Tintin_Petersson
             }
             hdb.SaveChanges();
         }
-        private void RemoveHamsters()
+        private async Task RemoveHamsters()
         {
-            HamsterDbContext hdb = new HamsterDbContext();
-
+            await Task.Delay(100);
             var cage = hdb.Cages.ToArray();
 
-            int mCounter = 0;
-            int fCounter = 0;
-            int statsToRemove = 0;
+            int counter = 0;
 
             for (int i = 0; i < cage.Length; i++)
             {
-                while (cage[i].hamsters != null)
+                while (cage[i].hamsters.Count != 0)
                 {
                     if (cage[i].Gender == Gender.Male)
                     {
-                        cage[i].hamsters[statsToRemove].CageId = null;
-                        cage[i].hamsters[statsToRemove].CheckInTime = null;
-                        cage[i].hamsters.Remove(cage[i].hamsters[mCounter]);
-                        mCounter++;
-                        statsToRemove++;
+                        cage[i].hamsters[counter].CageId = null;
+                        cage[i].hamsters[counter].CheckInTime = null;
+                        cage[i].hamsters.Remove(cage[i].hamsters[counter]);
                     }
                     else if (cage[i].Gender == Gender.Female)
                     {
-                        cage[i].hamsters[statsToRemove].CageId = null;
-                        cage[i].hamsters[statsToRemove].CheckInTime = null;
-                        cage[i].hamsters.Remove(cage[i].hamsters[fCounter]);
-                        fCounter++;
-                        statsToRemove++;
+                        cage[i].hamsters[counter].CageId = null;
+                        cage[i].hamsters[counter].CheckInTime = null;
+                        cage[i].hamsters.Remove(cage[i].hamsters[counter]);
                     }
                 }
-                statsToRemove = 0;
             }
             hdb.SaveChanges();
 
