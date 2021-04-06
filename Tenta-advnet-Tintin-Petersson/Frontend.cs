@@ -22,11 +22,19 @@ namespace Tenta_advnet_Tintin_Petersson
             int day = int.Parse(Console.ReadLine());
             return day;
         }
-        public int AmountOfDays()
+        public int GetAmountOfDays()
         {
+            Console.Clear();
             Console.WriteLine("How many days do you want to simulate?");
             int days = int.Parse(Console.ReadLine());
             return days;
+        }
+        public int GetSpeed()
+        {
+            Console.Clear();
+            Console.WriteLine("How fast do you want the program to run? 1-5");
+            int speed = int.Parse(Console.ReadLine());
+            return speed;
         }
     }
 }

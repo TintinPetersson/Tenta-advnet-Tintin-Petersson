@@ -14,8 +14,8 @@ namespace Tenta_advnet_Tintin_Petersson
         public Gender Gender { get; set; }
         public int? ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
-        public int? Cage_BuddiesId { get; set; }
-        public virtual Cage_Buddies Cage_Buddies { get; set; }
+        public int? CageId { get; set; }
+        public virtual Cage Cage { get; set; }
         public DateTime? CheckInTime { get; set; }
         public DateTime? TimeOfLastExercise { get; set; }
         public virtual ICollection<Logg_Activities> Logg_Activites { get; set; }

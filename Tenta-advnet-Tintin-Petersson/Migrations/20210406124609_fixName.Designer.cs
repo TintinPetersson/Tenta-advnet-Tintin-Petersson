@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tenta_advnet_Tintin_Petersson;
 
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
     [DbContext(typeof(HamsterDbContext))]
-    partial class HamsterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210406124609_fixName")]
+    partial class fixName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,15 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ActivityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
 
                     b.ToTable("Activities");
                 });
@@ -575,6 +582,13 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Activity", b =>
+                {
+                    b.HasOne("Tenta_advnet_Tintin_Petersson.Activity", null)
+                        .WithMany("Activities")
+                        .HasForeignKey("ActivityId");
+                });
+
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Hamster", b =>
                 {
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Activity", "Activity")
@@ -601,7 +615,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Logg_Activities", b =>
                 {
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Activity", "Activity")
-                        .WithMany("Logg_Activities")
+                        .WithMany()
                         .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -617,9 +631,9 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Activity", b =>
                 {
-                    b.Navigation("Hamsters");
+                    b.Navigation("Activities");
 
-                    b.Navigation("Logg_Activities");
+                    b.Navigation("Hamsters");
                 });
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Hamster", b =>

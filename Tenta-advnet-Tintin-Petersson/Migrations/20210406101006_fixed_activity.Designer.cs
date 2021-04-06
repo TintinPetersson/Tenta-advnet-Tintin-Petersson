@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tenta_advnet_Tintin_Petersson;
 
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
     [DbContext(typeof(HamsterDbContext))]
-    partial class HamsterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210406101006_fixed_activity")]
+    partial class fixed_activity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,15 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Logg_ActivitiesId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Logg_ActivitiesId");
 
                     b.ToTable("Activities");
                 });
@@ -41,6 +48,24 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cages");
+                });
+
+            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Cage_Buddies", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CageId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
@@ -49,59 +74,9 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cage");
+                    b.HasIndex("CageId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            MaxCapacity = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            MaxCapacity = 3
-                        });
+                    b.ToTable("Cage_Buddies");
                 });
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.ExerciseArea", b =>
@@ -132,7 +107,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CageId")
+                    b.Property<int?>("Cage_BuddiesId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("CheckInTime")
@@ -154,7 +129,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.HasIndex("CageId");
+                    b.HasIndex("Cage_BuddiesId");
 
                     b.HasIndex("OwnerId");
 
@@ -245,7 +220,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         {
                             Id = 11,
                             Age = 4,
-                            Gender = 0,
+                            Gender = 1,
                             Name = "Starlight",
                             OwnerId = 7
                         },
@@ -410,9 +385,6 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ActivityId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("HamsterId")
                         .HasColumnType("int");
 
@@ -420,8 +392,6 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
 
                     b.HasIndex("HamsterId");
 
@@ -575,15 +545,37 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Activity", b =>
+                {
+                    b.HasOne("Tenta_advnet_Tintin_Petersson.Logg_Activities", "Logg_Activities")
+                        .WithMany("Activities")
+                        .HasForeignKey("Logg_ActivitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Logg_Activities");
+                });
+
+            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Cage_Buddies", b =>
+                {
+                    b.HasOne("Tenta_advnet_Tintin_Petersson.Cage", "Cage")
+                        .WithMany()
+                        .HasForeignKey("CageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cage");
+                });
+
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Hamster", b =>
                 {
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Activity", "Activity")
-                        .WithMany("Hamsters")
+                        .WithMany()
                         .HasForeignKey("ActivityId");
 
-                    b.HasOne("Tenta_advnet_Tintin_Petersson.Cage", "Cage")
+                    b.HasOne("Tenta_advnet_Tintin_Petersson.Cage_Buddies", "Cage_Buddies")
                         .WithMany()
-                        .HasForeignKey("CageId");
+                        .HasForeignKey("Cage_BuddiesId");
 
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Owner", "Owner")
                         .WithMany("Hamsters")
@@ -593,38 +585,28 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
 
                     b.Navigation("Activity");
 
-                    b.Navigation("Cage");
+                    b.Navigation("Cage_Buddies");
 
                     b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Logg_Activities", b =>
                 {
-                    b.HasOne("Tenta_advnet_Tintin_Petersson.Activity", "Activity")
-                        .WithMany("Logg_Activities")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Hamster", "Hamster")
                         .WithMany("Logg_Activites")
                         .HasForeignKey("HamsterId");
 
-                    b.Navigation("Activity");
-
                     b.Navigation("Hamster");
-                });
-
-            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Activity", b =>
-                {
-                    b.Navigation("Hamsters");
-
-                    b.Navigation("Logg_Activities");
                 });
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Hamster", b =>
                 {
                     b.Navigation("Logg_Activites");
+                });
+
+            modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Logg_Activities", b =>
+                {
+                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Owner", b =>

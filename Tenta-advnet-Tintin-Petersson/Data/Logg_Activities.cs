@@ -7,9 +7,10 @@ namespace Tenta_advnet_Tintin_Petersson
     {
         public int Id { get; set; }
         public DateTime TimeStamp { get; set; }
-        public int HamsterId { get; set; }
+        public int? HamsterId { get; set; }
         public virtual Hamster Hamster { get; set; }
-        public virtual ICollection<Activity> Activities { get; set; }
+        public int ActivityId { get; set; }
+        public virtual Activity Activity { get; set; }
 
     }
 }
