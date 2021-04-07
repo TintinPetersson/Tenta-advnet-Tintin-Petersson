@@ -16,7 +16,7 @@ namespace Tenta_advnet_Tintin_Petersson
         private int tickMultiplier;
         private int month;
         private int day;
-        public int daysToSimulate;
+        private int daysToSimulate;
         private int speed;
         public Simulation()
         {
