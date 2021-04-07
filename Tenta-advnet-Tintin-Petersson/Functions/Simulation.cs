@@ -249,11 +249,11 @@ namespace Tenta_advnet_Tintin_Petersson
                 tickMultiplier += 10;
 
                 var exA = hdb.ExerciseAreas.ToArray().First();
-                var hej = exA.hamsters.ToList();
+                var ham = exA.hamsters.ToList();
                 var hamsters = new List<Hamster>();
                 var cage = hdb.Cages.ToArray();
 
-                foreach (var hamster in hej)
+                foreach (var hamster in ham)
                 {
                     hamsters.Add(hamster);
                     exA.hamsters.Remove(hamster);
