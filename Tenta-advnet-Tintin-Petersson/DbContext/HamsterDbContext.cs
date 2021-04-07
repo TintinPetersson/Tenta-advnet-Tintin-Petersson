@@ -14,7 +14,7 @@ namespace Tenta_advnet_Tintin_Petersson
         internal DbSet<Cage> Cages { get; set; }
         internal DbSet<ExerciseArea> ExerciseAreas { get; set; }
         internal DbSet<Activity> Activities { get; set; }
-        internal DbSet<Logg_Activities> Logg_Activities { get; set; }
+        internal DbSet<Logger> Logg_Activities { get; set; }
         internal DbSet<Cage> Cage_Buddies { get; set; }
         internal DbSet<Owner> Owners { get; set; }
 
@@ -70,8 +70,12 @@ namespace Tenta_advnet_Tintin_Petersson
                 new Cage { Id = 10 }
                 );
 
+            modelBuilder.Entity<ExerciseArea>().HasData(
+               new ExerciseArea { Id = 1 }
+               );
 
-            string[] csvLines = File.ReadAllLines(@"C:\Users\tpsso\source\repos\Tenta-advnet-Tintin-Petersson\Tenta-advnet-Tintin-Petersson\Data\Hamsterlista30.csv");
+
+           string[] csvLines = File.ReadAllLines(@"C:\Users\tpsso\source\repos\Tenta-advnet-Tintin-Petersson\Tenta-advnet-Tintin-Petersson\Data\Hamsterlista30.csv");
             
             for (int i = 0; i < csvLines.Length; i++)
             {

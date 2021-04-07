@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tenta_advnet_Tintin_Petersson;
 
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
     [DbContext(typeof(HamsterDbContext))]
-    partial class HamsterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210407111512_new-prop-in-hamster")]
+    partial class newpropinhamster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,9 +113,6 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
-
                     b.Property<int>("MaxCapacity")
                         .HasColumnType("int");
 
@@ -147,9 +146,6 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
 
                     b.Property<DateTime?>("CheckInTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CurrentActivity")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ExerciseAreaId")
                         .HasColumnType("int");

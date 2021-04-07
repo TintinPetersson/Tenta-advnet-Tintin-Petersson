@@ -6,7 +6,7 @@ namespace Tenta_advnet_Tintin_Petersson
     {
         static void Main(string[] args)
         {
-            Simulations sim = new Simulations();
+            Simulation sim = new Simulation();
             sim.Start();
             Console.ReadLine();
         }

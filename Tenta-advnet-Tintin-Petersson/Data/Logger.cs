@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public class Logg_Activities
+    public class Logger
     {
         public int Id { get; set; }
         public DateTime TimeStamp { get; set; }
@@ -11,6 +11,5 @@ namespace Tenta_advnet_Tintin_Petersson
         public virtual Hamster Hamster { get; set; }
         public int ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
-
     }
 }
