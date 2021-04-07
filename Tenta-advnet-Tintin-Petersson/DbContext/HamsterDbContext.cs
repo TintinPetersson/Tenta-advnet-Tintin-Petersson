@@ -58,16 +58,16 @@ namespace Tenta_advnet_Tintin_Petersson
                     );
 
             modelBuilder.Entity<Cage>().HasData(
-                new Cage { Id = 1 },
-                new Cage { Id = 2 },
-                new Cage { Id = 3 },
-                new Cage { Id = 4 },
-                new Cage { Id = 5 },
-                new Cage { Id = 6 },
-                new Cage { Id = 7 },
-                new Cage { Id = 8 },
-                new Cage { Id = 9 },
-                new Cage { Id = 10 }
+                new Cage { Id = 1, Gender = Gender.Male },
+                new Cage { Id = 2, Gender = Gender.Male },
+                new Cage { Id = 3, Gender = Gender.Male },
+                new Cage { Id = 4, Gender = Gender.Male },
+                new Cage { Id = 5, Gender = Gender.Male },
+                new Cage { Id = 6, Gender = Gender.Female },
+                new Cage { Id = 7, Gender = Gender.Female },
+                new Cage { Id = 8, Gender = Gender.Female },
+                new Cage { Id = 9, Gender = Gender.Female },
+                new Cage { Id = 10, Gender = Gender.Female }
                 );
 
             modelBuilder.Entity<ExerciseArea>().HasData(

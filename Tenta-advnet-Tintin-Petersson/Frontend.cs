@@ -40,7 +40,7 @@ namespace Tenta_advnet_Tintin_Petersson
         internal async Task PrintReport(string dailyReport)
         {
             Console.WriteLine(dailyReport.ToString());
-            await Task.Delay(10000);
+            await Task.Delay(100);
         }
     }
 }

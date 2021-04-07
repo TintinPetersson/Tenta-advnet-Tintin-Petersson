@@ -21,7 +21,7 @@ namespace Tenta_advnet_Tintin_Petersson
             StartTime = timeStamp;
             return timeStamp;
         }
-        public void OnCalculateCurrentTime(object sender, EventArgs e)
+        public void CalculateCurrentTime(object sender, EventArgs e)
         {
             int timeToAdd = ticker.tick * 6;
             DateTime timeStamp = StartTime.AddMinutes(timeToAdd);

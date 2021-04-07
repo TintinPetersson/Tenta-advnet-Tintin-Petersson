@@ -13,6 +13,7 @@ namespace Tenta_advnet_Tintin_Petersson
         private Ticker ticker;
         private Frontend frontend;
         private HamsterDbContext hdb;
+        private int tickMultiplier;
         private int month;
         private int day;
         public int daysToSimulate;
@@ -31,13 +32,14 @@ namespace Tenta_advnet_Tintin_Petersson
             #region Subscribers
             StartClock += StartTicker;
 
-            ticker.Tiktok += time.OnCalculateCurrentTime;
+            ticker.Tiktok += time.CalculateCurrentTime;
             ticker.Tiktok += StatusReport;
             ticker.Tiktok += ExerciseAdd;
+            ticker.Tiktok += ExerciseRemove;
             ticker.Tiktok += ChangeGenderOnExArea;
             #endregion
 
-            //Asking user for month and day
+            //Asking user for month, day, days to simulate and speed of program
             daysToSimulate = frontend.GetAmountOfDays();
             month = frontend.GetMonth();
             day = frontend.GetDay();
@@ -134,12 +136,12 @@ namespace Tenta_advnet_Tintin_Petersson
                     }
                 }
                 statsToAdd = 0;
+                hdb.SaveChanges();
             }
-            hdb.SaveChanges();
         }
         private async Task RemoveHamsters()
         {
-            await Task.Delay(100);
+            await Task.Delay(10);
             var cage = hdb.Cages.ToArray();
 
             int counter = 0;
@@ -151,18 +153,26 @@ namespace Tenta_advnet_Tintin_Petersson
                     if (cage[i].Gender == Gender.Male)
                     {
                         cage[i].hamsters[counter].CageId = null;
+                        cage[i].hamsters[counter].OldCageId = null;
+                        cage[i].hamsters[counter].ExerciseAreaId = null;
                         cage[i].hamsters[counter].CheckInTime = null;
+                        cage[i].hamsters[counter].TimeOfLastExercise = null;
+                        cage[i].hamsters[counter].CurrentActivity = "Home";
                         cage[i].hamsters.Remove(cage[i].hamsters[counter]);
                     }
                     else if (cage[i].Gender == Gender.Female)
                     {
+                        cage[i].hamsters[counter].ExerciseAreaId = null;
                         cage[i].hamsters[counter].CageId = null;
+                        cage[i].hamsters[counter].OldCageId = null;
                         cage[i].hamsters[counter].CheckInTime = null;
+                        cage[i].hamsters[counter].TimeOfLastExercise = null;
+                        cage[i].hamsters[counter].CurrentActivity = "Home";
                         cage[i].hamsters.Remove(cage[i].hamsters[counter]);
                     }
                 }
+                hdb.SaveChanges();
             }
-            hdb.SaveChanges();
         }
         private void ChangeGenderOnExArea(object sender, EventArgs e)
         {
@@ -191,7 +201,7 @@ namespace Tenta_advnet_Tintin_Petersson
                     hamsters.Add(item.hamsters[i]);
                 }
             }
-            var orderedList = hamsters.Select(c => c).OrderBy(c => c.TimeOfLastExercise).ToList();
+            var orderedList = hamsters.Select(c => c).OrderBy(c => c.TimeOfLastExercise).OrderBy(c => c.OldCageId).ToList();
             for (int i = 0; i < orderedList.Count; i++)
             {
                 if (!exA.IsFull)
@@ -229,12 +239,39 @@ namespace Tenta_advnet_Tintin_Petersson
                         }
                     }
                 }
+                hdb.SaveChanges();
             }
-            hdb.SaveChanges();
         }
         private void ExerciseRemove(object sender, EventArgs e)
         {
+            if (ticker.tick == 9 || ticker.tick == 9 + tickMultiplier)
+            {
+                tickMultiplier += 10;
 
+                var exA = hdb.ExerciseAreas.ToArray().First();
+                var hej = exA.hamsters.ToList();
+                var hamsters = new List<Hamster>();
+                var cage = hdb.Cages.ToArray();
+
+                foreach (var hamster in hej)
+                {
+                    hamsters.Add(hamster);
+                    exA.hamsters.Remove(hamster);
+                    hamster.TimeOfLastExercise = time.CurrentTime;
+                    for (int i = 0; i < cage.Length; i++)
+                    {
+                        if (cage[i].Id == hamster.OldCageId)
+                        {
+                            cage[i].hamsters.Add(hamster);
+                            hamster.CageId = cage[i].Id;
+                            hamster.CurrentActivity = "In Cage";
+                            hamster.ExerciseAreaId = null;
+                            hamster.OldCageId = null;
+                        }
+                    }
+                    hdb.SaveChanges();
+                }
+            }
         }
     }
 }
