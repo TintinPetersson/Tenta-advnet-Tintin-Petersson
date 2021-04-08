@@ -9,6 +9,7 @@ namespace Tenta_advnet_Tintin_Petersson
     public class Time
     {
         private Ticker ticker;
+        public string DateString { get => StartTime.ToShortDateString(); }
         public DateTime StartTime { get; set; }
         public DateTime CurrentTime { get; set; }
         public Time()

@@ -2,7 +2,7 @@
 
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
-    public partial class namefixes : Migration
+    public partial class enumadd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -36,11 +36,10 @@ namespace Tenta_advnet_Tintin_Petersson
             int speed = int.Parse(Console.ReadLine());
             return speed;
         }
-
         internal async Task PrintReport(string dailyReport)
         {
             Console.WriteLine(dailyReport.ToString());
-            await Task.Delay(100);
+            await Task.Delay(3000);
         }
     }
 }

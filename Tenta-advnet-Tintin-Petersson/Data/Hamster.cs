@@ -12,16 +12,14 @@ namespace Tenta_advnet_Tintin_Petersson
         public int Age { get; set; }
         public int OwnerId { get; set; }
         public string CurrentActivity { get; set; }
-        public int? ActivityId { get; set; }
         public int? CageId { get; set; }
         public int? OldCageId { get; set; }
         public int? ExerciseAreaId { get; set; }
         public DateTime? CheckInTime { get; set; }
         public DateTime? TimeOfLastExercise { get; set; }
-        public virtual Activity Activity { get; set; }
         public virtual Cage Cage { get; set; }
         public virtual ExerciseArea ExerciseArea { get; set; }
         public virtual Owner Owner { get; set; }
-        public virtual ICollection<Logger> Logger { get; set; }
+        public virtual ICollection<ActivityLog> ActivityLogger { get; set; }
     }
 }

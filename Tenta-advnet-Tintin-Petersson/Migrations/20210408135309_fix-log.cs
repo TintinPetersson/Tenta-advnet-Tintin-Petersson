@@ -2,25 +2,25 @@
 
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
-    public partial class fixed_activity : Migration
+    public partial class fixlog : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Logg_Activities_Hamsters_HamsterId",
-                table: "Logg_Activities");
+                name: "FK_ActivityLogs_Hamsters_HamsterId",
+                table: "ActivityLogs");
 
             migrationBuilder.AlterColumn<int>(
                 name: "HamsterId",
-                table: "Logg_Activities",
+                table: "ActivityLogs",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Logg_Activities_Hamsters_HamsterId",
-                table: "Logg_Activities",
+                name: "FK_ActivityLogs_Hamsters_HamsterId",
+                table: "ActivityLogs",
                 column: "HamsterId",
                 principalTable: "Hamsters",
                 principalColumn: "Id",
@@ -30,12 +30,12 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Logg_Activities_Hamsters_HamsterId",
-                table: "Logg_Activities");
+                name: "FK_ActivityLogs_Hamsters_HamsterId",
+                table: "ActivityLogs");
 
             migrationBuilder.AlterColumn<int>(
                 name: "HamsterId",
-                table: "Logg_Activities",
+                table: "ActivityLogs",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -44,8 +44,8 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Logg_Activities_Hamsters_HamsterId",
-                table: "Logg_Activities",
+                name: "FK_ActivityLogs_Hamsters_HamsterId",
+                table: "ActivityLogs",
                 column: "HamsterId",
                 principalTable: "Hamsters",
                 principalColumn: "Id",

@@ -14,10 +14,8 @@ namespace Tenta_advnet_Tintin_Petersson
         internal DbSet<Cage> Cages { get; set; }
         internal DbSet<ExerciseArea> ExerciseAreas { get; set; }
         internal DbSet<Activity> Activities { get; set; }
-        internal DbSet<Logger> Logg_Activities { get; set; }
-        internal DbSet<Cage> Cage_Buddies { get; set; }
+        internal DbSet<ActivityLog> ActivityLogs { get; set; }
         internal DbSet<Owner> Owners { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
