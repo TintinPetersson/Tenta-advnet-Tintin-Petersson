@@ -14,15 +14,5 @@ namespace Tenta_advnet_Tintin_Petersson
             hamsters = new List<Hamster>();
             MaxCapacity = 3;
         }
-        //public int AddHamster(Hamster hamster)
-        //{
-        //    if (!IsFull)
-        //    {
-        //        hamsters.Add(hamster);
-        //    }
-        //    else
-        //    {
-        //    }
-        //}
     }
 }

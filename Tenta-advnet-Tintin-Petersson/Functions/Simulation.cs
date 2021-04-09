@@ -462,6 +462,7 @@ namespace Tenta_advnet_Tintin_Petersson
             var gender = hdb.ExerciseAreas.Select(c => c.Gender).First();
             var exA = hdb.ExerciseAreas.ToArray();
             var cage = hdb.Cages.Select(c => c.hamsters).ToList();
+
             int exACounter = 0;
             int counter = 1;
 
@@ -475,7 +476,7 @@ namespace Tenta_advnet_Tintin_Petersson
             sb.AppendLine($"Tick: {ticker.tick}");
             sb.AppendLine($"Day: {ticker.counter}");
             sb.AppendLine($"Current time: { time.CurrentTime.ToString()}");
-            cage.Select(c => c.Count).ToList().ForEach(c => sb.AppendLine($"Cage: {counter++} Amount : {c}"));
+            cage.Select(c => c.Count).ToList().ForEach(c => sb.AppendLine($"Cage: {counter++.ToString().PadLeft(1).PadRight(2)} | Amount : {c.ToString().PadLeft(1).PadRight(2)}"));
             sb.AppendLine($"Amount in exercise area: {exACounter} | Gender: {gender}");
 
             string send = sb.ToString();
@@ -484,18 +485,39 @@ namespace Tenta_advnet_Tintin_Petersson
         private string DailyReport()
         {
             StringBuilder sb = new StringBuilder();
+
             foreach (var hamster in hdb.Hamsters)
             {
-                //var hej = hdb.ActivityLogs.Select(c => c).Where(c => c.HamsterId == hamster.Id).OrderBy(c => c.Date).Last();
+            
+                //Time before firt exercise and check in
+                var timeBeforeExercise = hamster.ActivityLogger
+                    .Select(c => c)
+                    .OrderBy(c => c.Date)
+                    .Last().Activities
+                    .Select(c => c)
+                    .Where(c => c.ActivityType == Activities.CheckIn)
+                    .First().Duration;
 
-                //var hejsan = hej.Activities.Count;
+                var fixedTimeFormat = string.Format("{0:hh} Hours", timeBeforeExercise);
 
-                //var blä = hdb.Activities.Select(c => c).Where(c => c.ActivityType == Activities.CheckIn).FirstOrDefault();
-                //var skrivUt = blä.Duration;
+                //Amount of activities for the day
+                var count = hamster.ActivityLogger
+                    .Select(c => c)
+                    .Where(c => c.Hamster == hamster)
+                    .ToList()
+                    .OrderBy(c => c)
+                    .Last().Activities
+                    .Where(c => c.ActivityType == Activities.Exercise)
+                    .Count();
 
-                sb.AppendLine($"\tName: {hamster.Name.PadLeft(5).PadRight(20)} " +
-                $"| Wait for exercise: skrivUt.ToString().PadLeft(2).PadRight(5) | " +
-                $"Activities: hejsan.ToString().PadLeft(5).PadRight(15)");
+                if (hamster.Gender == Gender.Male) { Console.ForegroundColor = ConsoleColor.DarkMagenta; }
+                else { Console.ForegroundColor = ConsoleColor.DarkCyan; }
+
+                //Creating stringbuilder
+                sb.AppendLine($"\t\tName: {hamster.Name.PadLeft(5).PadRight(15)} " +
+                $"| Wait for exercise: {fixedTimeFormat.PadLeft(5).PadRight(15)} | " +
+                $"Amount of activities: {count.ToString()}");
+                Console.ResetColor();
             }
             return sb.ToString();
         }

@@ -17,7 +17,7 @@ namespace Tenta_advnet_Tintin_Petersson
             Console.Clear();
             await Task.Run(() => Tiktok?.Invoke(this, EventArgs.Empty));
             tick++;
-            await Task.Delay(10* speed);
+            await Task.Delay(100* speed);
         }
         public static Ticker GetInstance()
         {
