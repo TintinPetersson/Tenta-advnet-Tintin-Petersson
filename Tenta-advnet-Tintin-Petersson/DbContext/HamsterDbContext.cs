@@ -75,7 +75,7 @@ namespace Tenta_advnet_Tintin_Petersson
 
 
             //Find csv file and read all lines. Split on ";" and add as new objects.
-            string[] csvLines = File.ReadAllLines(@"..\net5.0\HamsterListaTintin.csv");
+            string[] csvLines = File.ReadAllLines(@"C:\Users\tpsso\source\repos\Tenta-advnet-Tintin-Petersson\Tenta-advnet-Tintin-Petersson\bin\Debug\net5.0\HamsterListaTintin.csv");
             
             for (int i = 0; i < csvLines.Length; i++)
             {

@@ -10,15 +10,15 @@ using Tenta_advnet_Tintin_Petersson;
 namespace Tenta_advnet_Tintin_Petersson.Migrations
 {
     [DbContext(typeof(HamsterDbContext))]
-    [Migration("20210408133845_enum-add")]
-    partial class enumadd
+    [Migration("20210409155956_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "6.0.0-preview.3.21201.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Tenta_advnet_Tintin_Petersson.Activity", b =>
@@ -57,7 +57,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HamsterId")
+                    b.Property<int?>("HamsterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -622,9 +622,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                 {
                     b.HasOne("Tenta_advnet_Tintin_Petersson.Hamster", "Hamster")
                         .WithMany("ActivityLogger")
-                        .HasForeignKey("HamsterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HamsterId");
 
                     b.Navigation("Hamster");
                 });

@@ -95,7 +95,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HamsterId = table.Column<int>(type: "int", nullable: false)
+                    HamsterId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,7 @@ namespace Tenta_advnet_Tintin_Petersson.Migrations
                         column: x => x.HamsterId,
                         principalTable: "Hamsters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

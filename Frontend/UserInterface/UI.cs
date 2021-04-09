@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tenta_advnet_Tintin_Petersson
@@ -20,6 +21,7 @@ namespace Tenta_advnet_Tintin_Petersson
                 if (!checkInt)
                 {
                     Console.WriteLine("Only numbers.");
+                    //Thread.Sleep(300);
                 }
                 else
                 {
