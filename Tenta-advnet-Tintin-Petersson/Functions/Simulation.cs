@@ -11,7 +11,7 @@ namespace Tenta_advnet_Tintin_Petersson
         private EventHandler StartClock;
         private Time time;
         private Ticker ticker;
-        private Frontend frontend;
+        private UI UI;
         private HamsterDbContext hdb;
         private int tickMultiplier = 1;
         private int month;
@@ -22,7 +22,7 @@ namespace Tenta_advnet_Tintin_Petersson
         {
             time = new Time();
             ticker = Ticker.GetInstance();
-            frontend = new Frontend();
+            UI = new UI();
             hdb = new HamsterDbContext();
 
         }
@@ -40,10 +40,10 @@ namespace Tenta_advnet_Tintin_Petersson
             #endregion
 
             //Asking user for month, day, days to simulate and speed of program
-            daysToSimulate = frontend.GetAmountOfDays();
-            month = frontend.GetMonth();
-            day = frontend.GetDay();
-            speed = frontend.GetSpeed();
+            daysToSimulate = UI.GetAmountOfDays();
+            month = UI.GetMonth();
+            day = UI.GetDay();
+            speed = UI.GetSpeed();
             await Task.Run(() => time.CalculateStartTime(month, day));
             await Task.Run(() => RemoveActivities());
             await Task.Run(() => RemoveLog());
@@ -60,7 +60,7 @@ namespace Tenta_advnet_Tintin_Petersson
                 if (time.CurrentTime == time.StartTime.AddHours(10) && daysToSimulate > 1)
                 {
                     string dailyReport = await Task.Run(() => DailyReport());
-                    await Task.Run(() => frontend.PrintReport(dailyReport));
+                    await Task.Run(() => this.UI.PrintReport(dailyReport));
 
                     ticker.counter += 1;
                     ticker.tick = 0;
@@ -75,7 +75,7 @@ namespace Tenta_advnet_Tintin_Petersson
                 else if (time.CurrentTime == time.StartTime.AddHours(10) && daysToSimulate <= 1)
                 {
                     string dailyReport = await Task.Run(() => DailyReport());
-                    await Task.Run(() => frontend.PrintReport(dailyReport));
+                    await Task.Run(() => this.UI.PrintReport(dailyReport));
                     await Task.Run(() => RemoveHamsters());
                     break;
                 }
@@ -479,7 +479,7 @@ namespace Tenta_advnet_Tintin_Petersson
             sb.AppendLine($"Amount in exercise area: {exACounter} | Gender: {gender}");
 
             string send = sb.ToString();
-            await Task.Run(() => frontend.StatusReport(send));
+            await Task.Run(() => this.UI.StatusReport(send));
         }
         private string DailyReport()
         {
