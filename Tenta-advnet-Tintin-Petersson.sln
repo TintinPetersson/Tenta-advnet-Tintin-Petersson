@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenta-advnet-Tintin-Petersson", "Tenta-advnet-Tintin-Petersson\Tenta-advnet-Tintin-Petersson.csproj", "{7A4AF56B-A350-462D-BD0F-17EFD8788D6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend IO", "Tenta-advnet-Tintin-Petersson\Backend IO.csproj", "{7A4AF56B-A350-462D-BD0F-17EFD8788D6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{262928C8-8D66-4B37-81D4-36D38D3B289C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Frontend.csproj", "{262928C8-8D66-4B37-81D4-36D38D3B289C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
