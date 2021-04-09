@@ -2,14 +2,14 @@
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public class ExerciseArea
+    internal class ExerciseArea
     {
-        public List<Hamster> hamsters;
-        public int Id { get; set; }
-        public int MaxCapacity { get; set; }
-        public bool IsFull { get => MaxCapacity - hamsters.Count <= 0; }
-        public Gender? Gender { get; set; }
-        public ExerciseArea()
+        internal List<Hamster> hamsters;
+        internal int Id { get; set; }
+        internal int MaxCapacity { get; set; }
+        internal bool IsFull { get => MaxCapacity - hamsters.Count <= 0; }
+        internal Gender? Gender { get; set; }
+        internal ExerciseArea()
         {
             hamsters = new List<Hamster>();
             MaxCapacity = 6;

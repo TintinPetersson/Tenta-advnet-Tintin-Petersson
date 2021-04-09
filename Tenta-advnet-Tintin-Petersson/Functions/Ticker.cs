@@ -6,20 +6,22 @@ using System.Threading.Tasks;
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public class Ticker
+    internal class Ticker
     {
         private static Ticker ticker;
-        public int tick;
-        public event EventHandler Tiktok;
-        public int counter = 1;
-        public async Task Ticking(int speed)
+        internal event EventHandler Tiktok;
+
+        internal int tick;
+        internal int counter = 1;
+
+        internal async Task Ticking(int speed)
         {
             Console.Clear();
             await Task.Run(() => Tiktok?.Invoke(this, EventArgs.Empty));
             tick++;
-            await Task.Delay(100* speed);
+            await Task.Delay(500* speed);
         }
-        public static Ticker GetInstance()
+        internal static Ticker GetInstance()
         {
             if (ticker == null)
             {

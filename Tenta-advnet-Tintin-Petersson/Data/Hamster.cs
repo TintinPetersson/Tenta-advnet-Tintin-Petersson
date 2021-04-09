@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public enum Gender { Male, Female }
-    public class Hamster
+    internal enum Gender { Male, Female }
+    internal class Hamster
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public Gender Gender { get; set; }
-        public int Age { get; set; }
-        public int OwnerId { get; set; }
-        public string CurrentActivity { get; set; }
-        public int? CageId { get; set; }
-        public int? OldCageId { get; set; }
-        public int? ExerciseAreaId { get; set; }
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? TimeOfLastExercise { get; set; }
-        public virtual Cage Cage { get; set; }
-        public virtual ExerciseArea ExerciseArea { get; set; }
-        public virtual Owner Owner { get; set; }
-        public virtual ICollection<ActivityLog> ActivityLogger { get; set; }
+        internal int Id { get; set; }
+        internal string Name { get; set; }
+        internal Gender Gender { get; set; }
+        internal int Age { get; set; }
+        internal int OwnerId { get; set; }
+        internal string CurrentActivity { get; set; }
+        internal int? CageId { get; set; }
+        internal int? OldCageId { get; set; }
+        internal int? ExerciseAreaId { get; set; }
+        internal DateTime? CheckInTime { get; set; }
+        internal DateTime? TimeOfLastExercise { get; set; }
+        internal virtual Cage Cage { get; set; }
+        internal virtual ExerciseArea ExerciseArea { get; set; }
+        internal virtual Owner Owner { get; set; }
+        internal virtual ICollection<ActivityLog> ActivityLogger { get; set; }
     }
 }

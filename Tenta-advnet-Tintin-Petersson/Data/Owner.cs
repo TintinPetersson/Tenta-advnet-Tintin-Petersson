@@ -2,11 +2,11 @@
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public class Owner
+    internal class Owner
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<Hamster> Hamsters { get; set; }
+        internal int Id { get; set; }
+        internal string Name { get; set; }
+        internal virtual ICollection<Hamster> Hamsters { get; set; }
 
     }
 }

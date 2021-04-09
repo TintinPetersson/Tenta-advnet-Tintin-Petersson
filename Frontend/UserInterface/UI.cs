@@ -94,7 +94,7 @@ namespace Tenta_advnet_Tintin_Petersson
         {
             Console.Clear();
             Console.WriteLine(dailyReport.ToString());
-            await Task.Delay(3000);
+            await Task.Delay(5000);
         }
         public async Task StatusReport(string statusReport)
         {

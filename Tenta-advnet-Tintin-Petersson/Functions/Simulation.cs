@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace Tenta_advnet_Tintin_Petersson
 {
-    public class Simulation
+    internal class Simulation
     {
         private EventHandler StartClock;
         private Time time;
         private Ticker ticker;
         private UI UI;
         private HamsterDbContext hdb;
+
         private int tickMultiplier = 1;
         private int month;
         private int day;
         private int daysToSimulate;
         private int speed;
-        public Simulation()
+
+        internal Simulation()
         {
             time = new Time();
             ticker = Ticker.GetInstance();
@@ -26,7 +28,7 @@ namespace Tenta_advnet_Tintin_Petersson
             hdb = new HamsterDbContext();
 
         }
-        public async Task Start()
+        internal async Task Start()
         {
             //Subscribers
             #region Subscribers
@@ -505,7 +507,7 @@ namespace Tenta_advnet_Tintin_Petersson
                     .Select(c => c)
                     .Where(c => c.Hamster == hamster)
                     .ToList()
-                    .OrderBy(c => c)
+                    .OrderBy(c => c.Date)
                     .Last().Activities
                     .Where(c => c.ActivityType == Activities.Exercise)
                     .Count();
