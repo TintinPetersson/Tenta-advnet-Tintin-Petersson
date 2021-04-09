@@ -50,7 +50,7 @@ namespace Tenta_advnet_Tintin_Petersson
             await Task.Run(() => AddHamsters());
 
             //Invoking the event/simulation to start
-            StartClock?.Invoke(this, EventArgs.Empty);
+            await Task.Run(() => StartClock?.Invoke(this, EventArgs.Empty));
         }
         private async void StartTicker(object sender, EventArgs e)
         {
@@ -85,37 +85,22 @@ namespace Tenta_advnet_Tintin_Petersson
                 }
             }
         }
-        private string DailyReport()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var hamster in hdb.Hamsters)
-            {
-                //var hej = hdb.ActivityLogs.Select(c => c).Where(c => c.HamsterId == hamster.Id).OrderBy(c => c.Date).Last();
-
-                //var hejsan = hej.Activities.Count;
-
-                //var blä = hdb.Activities.Select(c => c).Where(c => c.ActivityType == Activities.CheckIn).FirstOrDefault();
-                //var skrivUt = blä.Duration;
-                
-                sb.AppendLine($"\tName: {hamster.Name.PadLeft(5).PadRight(20)} " +
-                $"| Wait for exercise: skrivUt.ToString().PadLeft(2).PadRight(5) | " +
-                $"Activities: hejsan.ToString().PadLeft(5).PadRight(15)");
-            }
-            return sb.ToString();
-        }
-        private void StatusReport(object sender, EventArgs e)
-        {
-            Console.WriteLine($"Tick: {ticker.tick}");
-            Console.WriteLine($"Day: {ticker.counter}");
-            Console.WriteLine($"Current time: { time.CurrentTime.ToString()}");
-        }
         private void AddHamsters()
         {
             var hamster = hdb.Hamsters.ToList();
             var cage = hdb.Cages.ToArray();
 
-            var female = hamster.Select(c => c).Where(c => c.Gender == Gender.Male).OrderBy(c => c.Name).ToList();
-            var male = hamster.Select(c => c).Where(c => c.Gender == Gender.Female).OrderBy(c => c.Name).ToList();
+            var female = hamster
+                .Select(c => c)
+                .Where(c => c.Gender == Gender.Male)
+                .OrderBy(c => c.Name)
+                .ToList();
+
+            var male = hamster
+                .Select(c => c)
+                .Where(c => c.Gender == Gender.Female)
+                .OrderBy(c => c.Name)
+                .ToList();
 
             int mCounter = 0;
             int fCounter = 0;
@@ -131,11 +116,14 @@ namespace Tenta_advnet_Tintin_Petersson
 
                         var activity = new Activity { ActivityType = Activities.CheckIn, StartTime = time.StartTime };
                         var log = new ActivityLog { Hamster = male[mCounter], Date = time.DateString, Activities = new List<Activity>() };
+
                         log.Activities.Add(activity);
+
                         if (male[mCounter].ActivityLogger == null)
                         {
                             male[mCounter].ActivityLogger = new List<ActivityLog>();
                         }
+
                         male[mCounter].ActivityLogger.Add(log);
 
                         cage[i].hamsters[statsToAdd].OldCageId = null;
@@ -143,6 +131,7 @@ namespace Tenta_advnet_Tintin_Petersson
                         cage[i].hamsters[statsToAdd].CageId = cage[i].Id;
                         cage[i].hamsters[statsToAdd].CheckInTime = time.StartTime;
                         cage[i].hamsters[statsToAdd].CurrentActivity = "In cage";
+
                         statsToAdd++;
                         mCounter++;
                     }
@@ -152,11 +141,14 @@ namespace Tenta_advnet_Tintin_Petersson
 
                         var activity = new Activity { ActivityType = Activities.CheckIn, StartTime = time.StartTime };
                         var log = new ActivityLog { Hamster = female[fCounter], Date = time.DateString, Activities = new List<Activity>() };
+
                         log.Activities.Add(activity);
+
                         if (female[fCounter].ActivityLogger == null)
                         {
                             female[fCounter].ActivityLogger = new List<ActivityLog>();
                         }
+
                         female[fCounter].ActivityLogger.Add(log);
 
                         cage[i].hamsters[statsToAdd].OldCageId = null;
@@ -164,6 +156,7 @@ namespace Tenta_advnet_Tintin_Petersson
                         cage[i].hamsters[statsToAdd].CageId = cage[i].Id;
                         cage[i].hamsters[statsToAdd].CheckInTime = time.StartTime;
                         cage[i].hamsters[statsToAdd].CurrentActivity = "In cage";
+
                         statsToAdd++;
                         fCounter++;
                     }
@@ -202,7 +195,6 @@ namespace Tenta_advnet_Tintin_Petersson
 
                         endTime.EndTime = time.CurrentTime;
 
-
                         cage[i].hamsters[counter].CageId = null;
                         cage[i].hamsters[counter].OldCageId = null;
                         cage[i].hamsters[counter].ExerciseAreaId = null;
@@ -232,7 +224,6 @@ namespace Tenta_advnet_Tintin_Petersson
 
                         endTime.EndTime = time.CurrentTime;
 
-
                         cage[i].hamsters[counter].ExerciseAreaId = null;
                         cage[i].hamsters[counter].CageId = null;
                         cage[i].hamsters[counter].OldCageId = null;
@@ -244,20 +235,6 @@ namespace Tenta_advnet_Tintin_Petersson
                 }
                 hdb.SaveChanges();
             }
-        }
-        private void ChangeGenderOnExArea(object sender, EventArgs e)
-        {
-            var exA = hdb.ExerciseAreas.ToArray().First();
-
-            if (time.CurrentTime == time.StartTime || time.CurrentTime == time.StartTime.AddHours(6))
-            {
-                exA.Gender = Gender.Male;
-            }
-            else if (time.CurrentTime == time.StartTime.AddHours(3) || time.CurrentTime == time.StartTime.AddHours(9))
-            {
-                exA.Gender = Gender.Female;
-            }
-            return;
         }
         private void ExerciseAdd(object sender, EventArgs e)
         {
@@ -276,6 +253,7 @@ namespace Tenta_advnet_Tintin_Petersson
                 .Select(c => c)
                 .OrderBy(c => c.TimeOfLastExercise)
                 .ToList();
+
             for (int i = 0; i < orderedList.Count; i++)
             {
                 if (!exA.IsFull && time.CurrentTime != time.StartTime.AddHours(10))
@@ -465,5 +443,62 @@ namespace Tenta_advnet_Tintin_Petersson
             }
             hdb.SaveChanges();
         }
+        private void ChangeGenderOnExArea(object sender, EventArgs e)
+        {
+            var exA = hdb.ExerciseAreas.ToArray().First();
+
+            if (time.CurrentTime == time.StartTime || time.CurrentTime == time.StartTime.AddHours(6))
+            {
+                exA.Gender = Gender.Male;
+            }
+            else if (time.CurrentTime == time.StartTime.AddHours(3) || time.CurrentTime == time.StartTime.AddHours(9))
+            {
+                exA.Gender = Gender.Female;
+            }
+            return;
+        }
+        private async void StatusReport(object sender, EventArgs e)
+        {
+            var gender = hdb.ExerciseAreas.Select(c => c.Gender).First();
+            var exA = hdb.ExerciseAreas.ToArray();
+            var cage = hdb.Cages.Select(c => c.hamsters).ToList();
+            int exACounter = 0;
+            int counter = 1;
+
+            for (int i = 0; i < exA.Length; i++)
+            {
+                exACounter = exA[i].hamsters.Count;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Tick: {ticker.tick}");
+            sb.AppendLine($"Day: {ticker.counter}");
+            sb.AppendLine($"Current time: { time.CurrentTime.ToString()}");
+            cage.Select(c => c.Count).ToList().ForEach(c => sb.AppendLine($"Cage: {counter++} Amount : {c}"));
+            sb.AppendLine($"Amount in exercise area: {exACounter} | Gender: {gender}");
+
+            string send = sb.ToString();
+            await Task.Run(() => frontend.StatusReport(send));
+        }
+        private string DailyReport()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var hamster in hdb.Hamsters)
+            {
+                //var hej = hdb.ActivityLogs.Select(c => c).Where(c => c.HamsterId == hamster.Id).OrderBy(c => c.Date).Last();
+
+                //var hejsan = hej.Activities.Count;
+
+                //var blä = hdb.Activities.Select(c => c).Where(c => c.ActivityType == Activities.CheckIn).FirstOrDefault();
+                //var skrivUt = blä.Duration;
+
+                sb.AppendLine($"\tName: {hamster.Name.PadLeft(5).PadRight(20)} " +
+                $"| Wait for exercise: skrivUt.ToString().PadLeft(2).PadRight(5) | " +
+                $"Activities: hejsan.ToString().PadLeft(5).PadRight(15)");
+            }
+            return sb.ToString();
+        }
+        
     }
 }
